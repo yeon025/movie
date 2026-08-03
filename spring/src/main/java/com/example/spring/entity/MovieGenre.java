@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "movie_genre")
+@Table(name = "movie_genres")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -15,11 +15,14 @@ public class MovieGenre {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "movie_id", nullable = false)
-    private Movie movie;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "genre_id", nullable = false)
+    @JoinColumn(name = "movie_id")
+    private Movie movie;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "genre_id")
     private Genre genre;
+
 }

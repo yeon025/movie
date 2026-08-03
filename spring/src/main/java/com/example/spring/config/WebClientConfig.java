@@ -9,13 +9,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
 
-    @Value("${kmdb.api.url}")
-    private String kmdbUrl;
+    @Value("${tmdb.api.url}")
+    private String url;
 
     @Bean
-    public WebClient kmdbWebClient() {
+    public WebClient tmdbWebClient() {
         return WebClient.builder()
-                .baseUrl(kmdbUrl)
+                .baseUrl(url)
                 .build();
     }
 }

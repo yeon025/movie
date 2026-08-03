@@ -1,4 +1,4 @@
 package com.example.spring.dto.feedback;
 
-public class FeedbackResponse {
+public class FeedbackRequestDto {
 }

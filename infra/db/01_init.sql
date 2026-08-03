@@ -2,6 +2,7 @@ CREATE EXTENSION IF NOT EXISTS vector;
  
 CREATE TABLE genres (
     id      BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    tmdb_id      BIGINT NOT NULL,
     name    VARCHAR(20) NOT NULL
 );
  
@@ -18,13 +19,17 @@ COMMENT ON COLUMN users.role IS 'USER/ADMIN';
 COMMENT ON COLUMN users.provider IS 'LOCAL/KAKAO';
  
 CREATE TABLE movies (
-    id                  BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name                VARCHAR(100) NOT NULL,
-    running_time        INT NOT NULL,
-    director            VARCHAR(50) NOT NULL,
-    release             DATE NOT NULL,
-    synopsis            TEXT NOT NULL,
-    synopsis_vector     VECTOR(1536) NOT NULL
+    id              BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    tmdb_id         BIGINT NOT NULL UNIQUE,
+    title           VARCHAR(255) NOT NULL,
+    original_title  VARCHAR(255),
+    synopsis        TEXT,
+    release_date    DATE,
+    runtime         INT,
+    poster_url      VARCHAR(500),
+    backdrop_url    VARCHAR(500),
+    rating          DOUBLE PRECISION,
+    synopsis_vector VECTOR(1536)
 );
  
 CREATE TABLE movie_genres (

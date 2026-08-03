@@ -12,7 +12,8 @@ services:
 
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./db/init:/docker-entrypoint-initdb.d
+      - ./db/01_init.sql:/docker-entrypoint-initdb.d/01_init.sql
+      - ./db/02_genre.sql:/docker-entrypoint-initdb.d/02_genre.sql
 
   spring:
     image: gradle:8.7-jdk21
@@ -33,9 +34,9 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
       KAKAO_CLIENT_ID: ${KAKAO_CLIENT_ID}
       KAKAO_CLIENT_SECRET: ${KAKAO_CLIENT_SECRET}
-      JWT_SECRET: dev_jwt_secret_change_me
-      KMDB_API_KEY: ${KMDB_API_KEY}
-      AI_SERVICE_URL: http://backend-ai:8000
+      JWT_SECRET: abcdefghijklmnopqrstuvwxyz123456
+      TMDB_API_KEY: ${TMDB_API_KEY}
+      AI_SERVICE_URL: http://fastapi:8000
 
   fastapi:
     build:

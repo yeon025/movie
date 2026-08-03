@@ -2,60 +2,65 @@ package com.example.spring.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "movie")
+@Table(name = "movies")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@DynamicInsert
 public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title_ko", nullable = false, length = 100)
-    private String titleKo;
-
-    @Column(name = "title_eng", nullable = false, length = 100)
-    private String titleEng;
+    // TMDB 영화 ID
+    @Column(name = "tmdb_id", nullable = false, unique = true)
+    private Long tmdbId;
 
     @Column(nullable = false)
-    private Integer runtime;
+    private String title;
 
-    @Column(name = "release_date", nullable = false)
+    @Column(name = "original_title")
+    private String originalTitle;
+
+    @Column(columnDefinition = "TEXT")
+    private String synopsis;
+
+    @Column(name = "release_date")
     private LocalDate releaseDate;
 
-    @Column(nullable = false, length = 50)
-    private String nation;
+    // 러닝타임 (분)
+    private Integer runtime;
 
-    @Lob
     @Column(name = "poster_url")
     private String posterUrl;
 
-    @Column(nullable = false, length = 50)
-    private String director;
+    @Column(name = "backdrop_url")
+    private String backdropUrl;
 
-    @Column(nullable = false, length = 100)
-    private String actors;
-
-    @Lob
-    @Column(nullable = false)
-    private String synopsis;
-
-    @Column(name = "synopsis_vector", nullable = false, columnDefinition = "vector(1536)")
-    private String synopsisVector;
+    private Double rating;
 
     @Builder.Default
-    @OneToMany(mappedBy = "movie")
-    private List<Feedback> feedbacks = new ArrayList<>();
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MovieGenre> genres = new ArrayList<>();
 
-    @Builder.Default
-    @OneToMany(mappedBy = "movie")
-    private List<MovieGenre> movieGenres = new ArrayList<>();
+    @JdbcTypeCode(SqlTypes.VECTOR)
+    @Column(name = "synopsis_vector", columnDefinition = "vector(1536)")
+    private float[] synopsisVector;
+
+
+    public void addGenre(MovieGenre movieGenre) {
+        genres.add(movieGenre);
+    }
 }
