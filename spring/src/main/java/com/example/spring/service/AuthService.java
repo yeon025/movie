@@ -24,7 +24,7 @@ public class AuthService {
     private final JwtProvider jwtProvider;
 
 
-    public void signup(SignupRequestDto request) {
+    public void signup(SignupRequestDto request, Role role) {
 
         if(userRepository.existsByEmail(request.getEmail())) {
             throw new CustomException(ErrorCode.EMAIL_ALREADY_EXISTS);
@@ -34,7 +34,7 @@ public class AuthService {
                 .name(request.getName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
+                .role(role)
                 .provider(Provider.LOCAL)
                 .build();
 

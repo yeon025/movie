@@ -28,8 +28,7 @@ CREATE TABLE movies (
     runtime         INT,
     poster_url      VARCHAR(500),
     backdrop_url    VARCHAR(500),
-    rating          DOUBLE PRECISION,
-    synopsis_vector VECTOR(1536)
+    rating          DOUBLE PRECISION
 );
  
 CREATE TABLE movie_genres (
@@ -51,6 +50,3 @@ CREATE TABLE feedbacks (
     CONSTRAINT uq_feedbacks UNIQUE (user_id, movie_id)
 );
 COMMENT ON COLUMN feedbacks.status IS 'LIKE/DISLIKE/NONE';
- 
-CREATE INDEX idx_movies_synopsis_vector ON movies
-    USING hnsw (synopsis_vector vector_cosine_ops);

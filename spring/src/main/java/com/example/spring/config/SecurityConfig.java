@@ -37,8 +37,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/auth/signup",
+                                "/api/auth/admin/signup",
                                 "/api/auth/login"
                         ).permitAll()
+
+                        // 관리자 API
+                        .requestMatchers("/api/admin/**")
+                        .hasRole("ADMIN")
+
+                        // 나머지는 로그인 필요
                         .anyRequest()
                         .authenticated()
                 )

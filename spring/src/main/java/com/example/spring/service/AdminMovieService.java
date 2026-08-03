@@ -1,5 +1,6 @@
 package com.example.spring.service;
 
+import com.example.spring.client.FastApiClient;
 import com.example.spring.client.TmdbClient;
 import com.example.spring.dto.movie.MovieDetailDto;
 import com.example.spring.dto.movie.MovieDto;
@@ -11,7 +12,6 @@ import com.example.spring.entity.MovieGenre;
 import com.example.spring.exception.CustomException;
 import com.example.spring.exception.ErrorCode;
 import com.example.spring.repository.GenreRepository;
-import com.example.spring.repository.MovieGenreRepository;
 import com.example.spring.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 
 @Slf4j
@@ -31,7 +29,7 @@ public class AdminMovieService {
     private final TmdbClient tmdbClient;
     private final MovieRepository movieRepository;
     private final GenreRepository genreRepository;
-    private final MovieGenreRepository movieGenreRepository;
+    private final FastApiClient fastApiClient;
 
     @Transactional
     public SyncMovieResponseDto syncMovies() {
@@ -63,7 +61,6 @@ public class AdminMovieService {
                         )
                         .toList();
 
-
                 // 영화 생성
                 Movie movie = Movie.builder()
                         .tmdbId(dto.getId())
@@ -77,7 +74,6 @@ public class AdminMovieService {
                         .rating(dto.getRating())
                         .build();
 
-
                 // 영화-장르 관계 생성
                 List<MovieGenre> movieGenres = genres.stream()
                         .map(genre -> MovieGenre.builder()
@@ -86,10 +82,8 @@ public class AdminMovieService {
                                 .build())
                         .toList();
 
-
                 // 관계 연결
                 movie.getGenres().addAll(movieGenres);
-
 
                 // 저장
                 movieRepository.save(movie);

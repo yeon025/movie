@@ -10,12 +10,23 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class WebClientConfig {
 
     @Value("${tmdb.api.url}")
-    private String url;
+    private String tmdbUrl;
+
+    @Value("${FASTAPI_BASE_URL}")
+    private String fastApiBaseUrl;
 
     @Bean
     public WebClient tmdbWebClient() {
         return WebClient.builder()
-                .baseUrl(url)
+                .baseUrl(tmdbUrl)
+                .build();
+    }
+
+    @Bean
+    public WebClient fastApiWebClient(){
+
+        return WebClient.builder()
+                .baseUrl(fastApiBaseUrl)
                 .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.example.spring.entity;
 
+import com.pgvector.PGvector;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
@@ -7,7 +8,6 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,13 +54,4 @@ public class Movie {
     @Builder.Default
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MovieGenre> genres = new ArrayList<>();
-
-    @JdbcTypeCode(SqlTypes.VECTOR)
-    @Column(name = "synopsis_vector", columnDefinition = "vector(1536)")
-    private float[] synopsisVector;
-
-
-    public void addGenre(MovieGenre movieGenre) {
-        genres.add(movieGenre);
-    }
 }

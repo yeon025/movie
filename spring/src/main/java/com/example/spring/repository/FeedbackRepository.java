@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
@@ -21,4 +22,6 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
             order by f.id desc
             """)
     List<Feedback> findByUserIdAndStatus(@Param("userId") Long userId, @Param("status") FeedbackStatus status);
+
+    Optional<Feedback> findByUserIdAndMovieId(Long userId, Long movieId);
 }

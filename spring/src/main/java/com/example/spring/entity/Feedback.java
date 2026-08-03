@@ -26,4 +26,9 @@ public class Feedback {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
+
+
+    public void updateStatus(FeedbackStatus status) {
+        this.status = status;
+    }
 }

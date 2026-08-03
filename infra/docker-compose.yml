@@ -36,7 +36,7 @@ services:
       KAKAO_CLIENT_SECRET: ${KAKAO_CLIENT_SECRET}
       JWT_SECRET: abcdefghijklmnopqrstuvwxyz123456
       TMDB_API_KEY: ${TMDB_API_KEY}
-      AI_SERVICE_URL: http://fastapi:8000
+      FASTAPI_BASE_URL: http://fastapi:8000
 
   fastapi:
     build:
@@ -48,9 +48,7 @@ services:
 
     environment:
       DATABASE_URL: postgresql://user:password@postgres:5432/movie
-      GEMINI_API_KEY: ${GEMINI_API_KEY}
-      EMBEDDING_MODEL: gemini-embedding-001
-      EMBEDDING_DIMENSION: 1536
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
 
     ports:
       - "8000:8000"

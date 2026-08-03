@@ -4,6 +4,7 @@ import com.example.spring.dto.ApiResponseDto;
 import com.example.spring.dto.auth.LoginRequestDto;
 import com.example.spring.dto.auth.LoginResponseDto;
 import com.example.spring.dto.auth.SignupRequestDto;
+import com.example.spring.entity.Role;
 import com.example.spring.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,10 +26,22 @@ public class AuthController {
             @RequestBody SignupRequestDto request
     ){
 
-        authService.signup(request);
+        authService.signup(request, Role.USER);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(ApiResponseDto.of("OK", "회원가입이 완료되었습니다."));
+                .body(ApiResponseDto.of("OK", "사용자 회원가입이 완료되었습니다."));
+    }
+
+
+    @PostMapping("/admin/signup")
+    public ResponseEntity<ApiResponseDto<Void>> adminSignup(
+            @RequestBody SignupRequestDto request
+    ){
+
+        authService.signup(request, Role.ADMIN);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ApiResponseDto.of("OK", "관리자 회원가입이 완료되었습니다."));
     }
 
 

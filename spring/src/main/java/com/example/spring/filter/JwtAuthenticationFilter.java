@@ -32,6 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         String authorization = request.getHeader("Authorization");
+        log.info("Authorization Header = {}", authorization);
 
         if (authorization != null && authorization.startsWith("Bearer ")) {
 
@@ -42,6 +43,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String email = jwtProvider.getEmail(token);
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+                log.info("LOGIN USER = {}", userDetails.getUsername());
+                log.info("AUTHORITIES = {}", userDetails.getAuthorities());
 
                 Authentication authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities()
